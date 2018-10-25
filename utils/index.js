@@ -1,4 +1,4 @@
-exports.formatArticles = (articlesData, topicDocs, userDocs) => {
+exports.formatArticles = (topicDocs, userDocs, articlesData) => {
   return articlesData.map(article => {
     return {
       title: article.title,
@@ -12,17 +12,15 @@ exports.formatArticles = (articlesData, topicDocs, userDocs) => {
   });
 };
 
-exports.formatComments = (commentsData, articleDocs, topicDocs, userDocs) => {
+exports.formatComments = (topicDocs, userDocs, articleDocs, commentsData) => {
   return commentsData.map(comment => {
-    console.log(">>>", articleDocs, "<<<<<");
     return {
       ...comment,
       belongs_to: articleDocs.find(
         article => article.title === comment.belongs_to
-      )
-      //   created_by: userDocs.find(user => user.username === comment.created_by)
-      //     ._id
-      // };
+      )._id,
+      created_by: userDocs.find(user => user.username === comment.created_by)
+        ._id
     };
   });
 };

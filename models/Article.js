@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const ArticleSchema = new Schema({
@@ -25,9 +25,15 @@ const ArticleSchema = new Schema({
   },
   created_by: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
+    ref: "users",
     required: true
   }
 });
 
-module.exports = mongoose.model('articles', ArticleSchema);
+//const Article =  mongoose.model("articles", ArticleSchema);
+
+//exports.getAll = () =>{
+//  return Article.find();
+//};
+
+module.exports = mongoose.model("articles", ArticleSchema);

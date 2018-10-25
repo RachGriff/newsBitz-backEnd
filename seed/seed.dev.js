@@ -1,4 +1,4 @@
-const DB_URL = require("../config/config");
+const { DB_URL } = require("../config/config");
 const seedDB = require("./seed");
 const mongoose = require("mongoose");
 const {
@@ -6,7 +6,7 @@ const {
   commentsData,
   topicsData,
   usersData
-} = require("./testData/index");
+} = require("./devData/index");
 
 mongoose
   .connect(
@@ -18,4 +18,5 @@ mongoose
   })
   .then(() => {
     return mongoose.disconnect();
-  });
+  })
+  .catch(console.log);
