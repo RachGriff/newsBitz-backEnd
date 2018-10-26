@@ -1,7 +1,10 @@
 const app = require("express")();
 const apiRouter = require("./routes/api-router");
 const mongoose = require("mongoose");
-const { DB_URL } = require("./config/config");
+const { DB_URL } =
+  process.env.NODE_ENV === "production"
+    ? process.env
+    : require("./config/config");
 const bodyParser = require("body-parser");
 const {
   handle400s,

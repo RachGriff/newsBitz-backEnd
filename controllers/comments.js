@@ -21,13 +21,13 @@ exports.changeCommentVote = (req, res, next) => {
   }
 };
 
-// exports.deleteComment = (req, res, next) => {
-//   const { comment_id } = req.params;
+exports.deleteComment = (req, res, next) => {
+  const { comment_id } = req.params;
 
-//   Comment.deleteOne({ _id: comment_id })
-//     .then(err => {
-//       if (err) console.log(err);
-//       res.status(200).send({ msg: "comment deleted" });
-//     })
-//     .catch(next);
-// };
+  Comment.deleteOne({ _id: comment_id })
+    .then(err => {
+      if (err) console.log(err);
+      res.status(200).send({ msg: "comment deleted" });
+    })
+    .catch(next);
+};

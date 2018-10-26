@@ -10,21 +10,17 @@ exports.getTopics = (req, res, next) => {
 
 exports.getTopicsForSlug = (req, res, next) => {
   const slug = req.params.topic_slug;
-  exports.addNewArticle = (req, res, next) => {
-    Article.create(req.body)
-      .then(article => {
-        res.status(201).send({ article });
-      })
-      .catch(next);
-  };
   Article.find({ belongs_to: slug })
-    .then(articles => res.status(200).send({ articles }))
+    .then(articles =>
+      // articles.commentCount = 0; check this**
+      res.status(200).send({ articles })
+    )
     .catch(next);
 };
-
 exports.addNewArticle = (req, res, next) => {
   Article.create(req.body)
     .then(article => {
+      // article.commentCount = 0; check this*
       res.status(201).send({ article });
     })
     .catch(next);

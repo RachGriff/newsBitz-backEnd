@@ -33,5 +33,10 @@ describe("/api", () => {
           expect(res.body.topics.length).to.equal(topicDocs.length);
         });
     });
+    describe("/:topic_slug/articles", () => {
+      it("get /:topic_slug/articles returns a status 200 and articles relating to the slug", () => {
+        return request.get();
+      });
+    });
   });
 });
