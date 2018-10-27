@@ -1,87 +1,78 @@
-# Project Title
+## Northcoders news
 
-One Paragraph of project description goes here
+An API to serve news articles on a range of topics. These articles have comments associated with them, and user information linked to these comments. Up and down votes can be added to the articles and comments.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You will need a text editor such as Visual Studio Code, Sublime Text or Atom in which to develop the project.
 
-```
-Give examples
-```
+To begin you will need to fork and clone your own repository of the project.
+To do this, click on the fork button and copy the link provided.
+In your terminal, navigate to the directory in which you wish to save your project, and then enter:
+
+$ git clone //paste in copied link here.
+
+Next, use the 'cd' command to navigate into the project folder, and open the project. For example, in VS code, it would look like this:
+
+$cd northcoders_news
+$code .
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+#Step 1:
 
-Say what the step will be
+$npm install this will install the packages required.
 
-```
-Give the example
-```
+This will create a basic package.json which can then be added to to meet the needs of the project.
+These will include:
+For this project you will need to install a number of key packages:
 
-And repeat
+*dependencies:
+body-parser
+express
+mongoose
+*devDependencies:
+chai
+mocha
+nodemon
+supertest
 
-```
-until finished
-```
+#Step 2:
 
-End with an example of getting some data out of the system or using it for a little demo
+You will need have mongo installed on your machine. For futher information see https://www.mongodb.com
 
-## Running the tests
+#Step 3:
+Run the command npm run seed to seed the database.
+Now you will be able to access the database using the command line. Here are some useful commands:
+use northcoders_news//accesses the development database
+use northcoders_news_test//accesses the test database
+show dbs
+show collections
+db.<'insert collection name'>find().pretty()//returns contents of the search
 
-Explain how to run the automated tests for this system
+To access the data in the browser:
+enter http://localhost:9090/api/
 
-### Break down into end to end tests
+This will bring up an html page listing the possible endpoints served.
 
-Explain what these tests test and why
+From here you can enter these endpoints to access the data.
 
-```
-Give an example
-```
+### Testing
 
-### And coding style tests
+In the spec file are a suite of tests designed to ensure that the functionaltiy of the api works as expected, and that errors are handled in a way that provides information to the user.
 
-Explain what these tests test and why
+To run the tests:
 
-```
-Give an example
-```
+Seed the database using npm run seed.
+Then use the command npm run test.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+You can deploy on your local machine, or using a platform such as Heroku. For further information see https://www.heroku.com.
 
 ## Built With
 
-- [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-- [Maven](https://maven.apache.org/) - Dependency Management
-- [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
-
-## Authors
-
-- **Billie Thompson** - _Initial work_ - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc
+- [Heroku](https://www.heroku.com)
+- [Mlabs](https://mlab.com)
