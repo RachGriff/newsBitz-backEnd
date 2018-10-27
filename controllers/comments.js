@@ -3,21 +3,28 @@ const { Comment } = require("../models");
 exports.changeCommentVote = (req, res, next) => {
   const { comment_id } = req.params;
   const { vote } = req.query;
-
-  if (vote === "up") {
-    Comment.findByIdAndUpdate(comment_id, { $inc: { votes: 1 } }, { new: true })
-      .lean()
-      .then(result => res.send(result))
-      .catch(next);
+  if (vote !== "up" && vote !== "down") {
+    res.status(400).send({ msg: "bad request" });
   } else {
-    Comment.findByIdAndUpdate(
-      comment_id,
-      { $inc: { votes: -1 } },
-      { new: true }
-    )
-      .lean()
-      .then(result => res.send(result))
-      .catch(next);
+    if (vote === "up") {
+      Comment.findByIdAndUpdate(
+        comment_id,
+        { $inc: { votes: 1 } },
+        { new: true }
+      )
+        .lean()
+        .then(result => res.send(result))
+        .catch(next);
+    } else {
+      Comment.findByIdAndUpdate(
+        comment_id,
+        { $inc: { votes: -1 } },
+        { new: true }
+      )
+        .lean()
+        .then(result => res.send(result))
+        .catch(next);
+    }
   }
 };
 

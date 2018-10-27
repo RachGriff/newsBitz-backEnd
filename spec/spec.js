@@ -202,5 +202,50 @@ describe("/api", () => {
           .expect(400);
       });
     });
+    describe("patch/:comment_id", () => {
+      it("patch/:comment_id returns a status 200 and an updated vote count", () => {
+        const expected = {
+          body:
+            "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
+          belongs_to: "Making sense of Redux",
+          created_by: "grumpy19",
+          votes: 7,
+          created_at: 1478813209256
+        };
+        return request
+          .patch(`/api/comments/${commentDocs[0]._id}?vote=up`)
+          .expect(200)
+          .then(res => {
+            expect(res.body.votes).to.equal(8);
+            expect(res.body).to.contain.keys(expected);
+          });
+      });
+      it("/patch/:comment_id returns status 400 if passed an invalid query string", () => {
+        return request
+          .patch(`/api/comments/${commentDocs[0]._id}?vote=gelato!`)
+          .expect(400);
+      });
+    });
+    describe("delete/:comment_id", () => {
+      it("delete/:comment_id returns a status 400 and message'comment deleted'", () => {
+        return request
+          .delete(`/api/comments/${commentDocs[0]._id}`)
+          .expect(200);
+      });
+    });
+    describe("get/:username", () => {
+      it("get/:username returns a status 200 and the user for the req params username", () => {
+        return request
+          .get(`/api/users/${userDocs[0].username}`)
+          .expect(200)
+          .then(res => {
+            console.log(res.body);
+            expect(res.body.user.name).to.equal(`${userDocs[0].name}`);
+          });
+      });
+    });
+    it("get/:username returns a status 404 if the username passed does not exist", () => {
+      return request.get(`/api/users/8888888888888`).expect(404);
+    });
   });
 });
