@@ -3,8 +3,8 @@ const express = require("express");
 const handle400s = (err, req, res, next) => {
   console.log(err);
 
-  if (err.status === 400) {
-    res.status(400).send({ msg: "Bad request" });
+  if (err.status === 400 || err.name === "ValidationError") {
+    res.status(400).send({ msg: err.msg || "Bad request" });
   } else next(err);
 };
 

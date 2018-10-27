@@ -11,22 +11,21 @@ exports.getTopics = (req, res, next) => {
 exports.getTopicsForSlug = (req, res, next) => {
   const slug = req.params.topic_slug;
   Article.find({ belongs_to: slug })
-    .then(articles =>
-      // articles.commentCount = 0; check this**
-      res.status(200).send({ articles })
-    )
+    .then(articles => {
+      if (articles.length === 0) {
+        res.status(400).send({ msg: "Bad request" });
+      } else {
+        res.status(200).send({ articles });
+      }
+    })
     .catch(next);
 };
 exports.addNewArticle = (req, res, next) => {
   Article.create(req.body)
     .then(article => {
-      // article.commentCount = 0; check this*
-      res.status(201).send({ article });
+      if (!article) res.status(400).send({ msg: "Bad request" });
+      res.setHeader("Content-Type", "application/json");
+      res.status(201).send(JSON.stringify({ article }));
     })
     .catch(next);
 };
-
-// # Add a new article to a topic. This route requires a JSON body with title and body key value pairs
-// # e.g: `{ "title": "new article", "body": "This is my new article content", "created_by": "user_id goes here"}`
-// ```
-// { "title": "new article", "body": "This is my new article content", "created_by": "user_id goes here"}`

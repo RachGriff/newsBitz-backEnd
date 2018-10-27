@@ -17,18 +17,20 @@ exports.getAllArticles = (req, res, next) => {
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
+
   Article.findById(article_id)
     .populate("created_by")
     .lean()
     .then(article => {
-      if (!article)
+      if (!article) {
         return Promise.reject({ status: 404, msg: "article not found" });
+      }
       return Promise.all([article, commentCount(article)]);
     })
     .then(([article, count]) => {
+      article.commentCount = count;
       res.status(200).send({ article });
     })
-
     .catch(next);
 };
 
@@ -79,7 +81,6 @@ const commentCount = article => {
   return Comment.find({ belongs_to: article._id })
     .countDocuments()
     .then(count => {
-      article.commentCount = count;
-      return article;
+      return count;
     });
 };
