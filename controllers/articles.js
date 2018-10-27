@@ -5,11 +5,18 @@ exports.getAllArticles = (req, res, next) => {
     .populate("created_by")
     .lean()
     .then(articles => {
-      const articlesComments = articles.map(article => commentCount(article));
-      return Promise.all(articlesComments);
+      const countsPromises = [];
+
+      articles.forEach(a => countsPromises.push(commentCount(a)));
+
+      return Promise.all([articles].concat(countsPromises));
     })
-    .then(articles => {
-      res.status(200).send({ articles });
+    .then(results => {
+      const articlesWithCounts = results[0].map((e, i) => ({
+        ...e,
+        commentCount: results[i + 1]
+      }));
+      res.status(200).send({ articles: articlesWithCounts });
     })
 
     .catch(next);
