@@ -59,21 +59,28 @@ exports.addNewComment = (req, res, next) => {
 exports.updateVotes = (req, res, next) => {
   const { article_id } = req.params;
   const { vote } = req.query;
-
-  if (vote === "up") {
-    Article.findByIdAndUpdate(article_id, { $inc: { votes: 1 } }, { new: true })
-      .lean()
-      .then(result => res.send(result))
-      .catch(next);
+  if (vote !== "up" && vote !== "down") {
+    res.status(400).send({ msg: "bad request" });
   } else {
-    Article.findByIdAndUpdate(
-      article_id,
-      { $inc: { votes: -1 } },
-      { new: true }
-    )
-      .lean()
-      .then(result => res.send(result))
-      .catch(next);
+    if (vote === "up") {
+      Article.findByIdAndUpdate(
+        article_id,
+        { $inc: { votes: 1 } },
+        { new: true }
+      )
+        .lean()
+        .then(result => res.send(result))
+        .catch(next);
+    } else {
+      Article.findByIdAndUpdate(
+        article_id,
+        { $inc: { votes: -1 } },
+        { new: true }
+      )
+        .lean()
+        .then(result => res.send(result))
+        .catch(next);
+    }
   }
 };
 

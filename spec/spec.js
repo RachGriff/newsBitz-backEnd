@@ -135,5 +135,72 @@ describe("/api", () => {
           });
       });
     });
+    describe("post/:article_id/comments", () => {
+      it("post /:article_id/comments returns 201 and creates a new comment for the given article id", () => {
+        const newComment = {
+          body:
+            "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam!",
+          belongs_to: articleDocs[0]._id,
+          created_by: userDocs[0]._id,
+          votes: 5,
+          created_at: 1514987931240
+        };
+        return request
+          .post(`/api/articles/${articleDocs[0]._id}/comments`)
+          .send(newComment)
+          .expect(201)
+          .then(res => {
+            expect(res.body.comment).is.not.null;
+            expect(res.body.comment).to.contain.keys(newComment);
+          });
+      });
+      it("post /:article_id/comments returns a status 404 when passed an invalid path", () => {
+        const newComment = {
+          body:
+            "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam!",
+          belongs_to: articleDocs[0]._id,
+          created_by: userDocs[0]._id,
+          votes: 5,
+          created_at: 1514987931240
+        };
+        return request
+          .post(`/api/articles/${articleDocs[0]._id}/camments`)
+          .send(newComment)
+          .expect(404);
+      });
+      it("post /:article_id/comments returns a status 400 when passed an invalid schema format", () => {
+        const newComment = {
+          body:
+            "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam!"
+        };
+        return request
+          .post(`/api/articles/${articleDocs[0]._id}/comments`)
+          .send(newComment)
+          .expect(400);
+      });
+    });
+    describe("/patch/:article_id", () => {
+      it("/patch/:article_id returns a status 200 and an updated vote count", () => {
+        const expected = {
+          title: "Further Catspiracies catnipped in the bud!",
+          body: "Cat burglar ring exposed!",
+          created_by: userDocs[0]._id,
+          created_at: 1514987931240,
+          belongs_to: "cats"
+        };
+        return request
+          .patch(`/api/articles/${articleDocs[0]._id}?vote=up`)
+          .expect(200)
+          .then(res => {
+            expect(res.body.votes).to.equal(1);
+            expect(res.body).to.contain.keys(expected);
+          });
+      });
+      it("/patch/:article_id returns status 400 if passed an invalid query string", () => {
+        return request
+          .patch(`/api/articles/${articleDocs[0]._id}?vote=banana`)
+          .expect(400);
+      });
+    });
   });
 });
