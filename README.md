@@ -1,5 +1,7 @@
 ## Northcoders news
 
+Here is the link to the Northcoders news api: https://peaceful-temple-55135.herokuapp.com
+
 An API to serve news articles on a range of topics. These articles have comments associated with them, and user information linked to these comments. Up and down votes can be added to the articles and comments.
 
 ## Getting Started
