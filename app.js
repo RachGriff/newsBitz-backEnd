@@ -1,10 +1,10 @@
 const app = require("express")();
-const apiRouter = require("./routes/api-router");
+const apiRouter = require("./routes/apiRouter");
 const mongoose = require("mongoose");
 const { DB_URL } =
   process.env.NODE_ENV === "production"
     ? process.env
-    : require("./config/config");
+    : require("./config");//check still works
 const bodyParser = require("body-parser");
 const {
   handle400s,
@@ -32,6 +32,5 @@ app.use(handle404s);
 
 app.use(handle500s);
 
-//app.use("/", something);  serve the static HTML page of api documentation here
-//set up static route to serve from the public folder
+
 module.exports = app;

@@ -1,0 +1,14 @@
+# Endpoints
+​
+- I’d probably call your config file `./config/index.js` ** done
+- Keep file naming consistent (all kebab or camelcase - pick one **done
+- Remove comments**jkept some for now as useful
+- Should keep routes consistent (i.e. `/topics/:topic_slug/articles` articles should be the same as `/articles` articles) 
+  so make sure comment count / populated created_by is there.????????
+- Difficult to read comment count solution.
+- POST `/topics/:.../articles` should get “belongs_to” from params, not body
+- I found it hard to find some controllers
+- comments route doesn’t need to `belongs_to` to be populated. Populate `created_by` instead (so we can get user details of the user that made the comment).
+- Update votes could be DRYer - one number changes & you write a whole else block of repeated code
+- Remove unused variables (e.g. Topics required in where it isn’t used.**done
+​

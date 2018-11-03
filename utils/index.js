@@ -1,4 +1,4 @@
-exports.formatArticles = (topicDocs, userDocs, articlesData) => {
+exports.formatArticles = (userDocs, articlesData) => {
   return articlesData.map(article => {
     return {
       title: article.title,
@@ -12,7 +12,7 @@ exports.formatArticles = (topicDocs, userDocs, articlesData) => {
   });
 };
 
-exports.formatComments = (topicDocs, userDocs, articleDocs, commentsData) => {
+exports.formatComments = (userDocs, articleDocs, commentsData) => {
   return commentsData.map(comment => {
     return {
       ...comment,
@@ -25,5 +25,3 @@ exports.formatComments = (topicDocs, userDocs, articleDocs, commentsData) => {
   });
 };
 
-// a created_by property that references a user's mongo _id and
-// a belongs_to property that references the specific article's mongo _id.

@@ -5,18 +5,10 @@ exports.getAllArticles = (req, res, next) => {
     .populate("created_by")
     .lean()
     .then(articles => {
-      const countsPromises = [];
-
-      articles.forEach(art => countsPromises.push(commentCount(art))); //pushes count to array
-
-      return Promise.all([articles].concat(countsPromises)); //adds count array onto promises, so promises arr is at index 0 of resulting arr.
+      return Promise.all(articles.map(a=>addCommentCount(a))); //adds count array onto promises, so promises arr is at index 0 of resulting arr.
     })
-    .then(results => {
-      const articlesWithCounts = results[0].map((e, i) => ({
-        ...e,
-        commentCount: results[i + 1] //commentcount set to be index plus 1 as these are the matching article and count [[art1,art2]5,2] art 1 count is at position 1 so is [i+1]
-      }));
-      res.status(200).send({ articles: articlesWithCounts });
+    .then(articles => {
+      res.status(200).send({ articles });
     })
 
     .catch(next);
@@ -44,7 +36,7 @@ exports.getArticleById = (req, res, next) => {
 exports.getArticleComments = (req, res, next) => {
   const { article_id } = req.params;
   Comment.find({ belongs_to: article_id })
-    .populate("belongs_to", "created_by")
+    .populate("created_by")
     .lean()
     .then(comments => {
       res.send({ comments });
@@ -91,10 +83,10 @@ exports.updateVotes = (req, res, next) => {
   }
 };
 
-const commentCount = article => {
+const addCommentCount = article => {
   return Comment.find({ belongs_to: article._id })
     .countDocuments()
     .then(count => {
-      return count;
+      return {...article, commentCount: count};
     });
 };

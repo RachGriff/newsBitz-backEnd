@@ -78,3 +78,30 @@ You can deploy on your local machine, or using a platform such as Heroku. For fu
 
 - [Heroku](https://www.heroku.com)
 - [Mlabs](https://mlab.com)
+
+/*
+
+Shape of routes - get/topics:
+
+{
+    "topics": [
+        {
+            "_id": "5bddbd22b1195c1b2e6ebdba",
+            "title": "Coding",
+            "slug": "coding",
+            "__v": 0
+        },
+        {
+            "_id": "5bddbd22b1195c1b2e6ebdbb",
+            "title": "Football",
+            "slug": "football",
+            "__v": 0
+        },
+        {
+            "_id": "5bddbd22b1195c1b2e6ebdbc",
+            "title": "Cooking",
+            "slug": "cooking",
+            "__v": 0
+        }
+    ]
+}
