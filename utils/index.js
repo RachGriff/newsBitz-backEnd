@@ -1,3 +1,5 @@
+const {Comment}=require("../models");
+
 exports.formatArticles = (userDocs, articlesData) => {
   return articlesData.map(article => {
     return {
@@ -25,3 +27,10 @@ exports.formatComments = (userDocs, articleDocs, commentsData) => {
   });
 };
 
+exports.addCommentCount = article => {
+  return Comment.find({ belongs_to: article._id })
+    .countDocuments()
+    .then(count => {
+      return {...article, commentCount: count};
+    });
+};

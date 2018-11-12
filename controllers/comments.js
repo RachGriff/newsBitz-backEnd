@@ -6,25 +6,14 @@ exports.changeCommentVote = (req, res, next) => {
   if (vote !== "up" && vote !== "down") {
     res.status(400).send({ msg: "bad request" });
   } else {
-    if (vote === "up") {
-      Comment.findByIdAndUpdate(
-        comment_id,
-        { $inc: { votes: 1 } },
-        { new: true }
-      )
-        .lean()
-        .then(result => res.send(result))
-        .catch(next);
-    } else {
-      Comment.findByIdAndUpdate(
-        comment_id,
-        { $inc: { votes: -1 } },
-        { new: true }
-      )
-        .lean()
-        .then(result => res.send(result))
-        .catch(next);
-    }
+    Comment.findByIdAndUpdate(
+      comment_id,
+      { $inc: { votes: vote === "up" ? 1 : -1 } },
+      { new: true }
+    )
+      .lean()
+      .then(result => res.send(result))
+      .catch(next);
   }
 };
 

@@ -1,4 +1,4 @@
-const { DB_URL } = require("../config");//check still works
+const { DB_URL } = require("../config"); //check still works
 const seedDB = require("./seed");
 const mongoose = require("mongoose");
 const {
@@ -6,7 +6,7 @@ const {
   commentsData,
   topicsData,
   usersData
-} = require("./devData/index");
+} = require("./testData/index");
 
 mongoose
   .connect(

@@ -1,5 +1,5 @@
-const { Comment, Topic, Article } = require("../models");
-
+const { Topic, Article } = require("../models");
+const {addCommentCount} = require("../utils")
 exports.getTopics = (req, res, next) => {
   Topic.find()
     .then(topics => {
@@ -26,18 +26,12 @@ exports.getTopicsForSlug = (req, res, next) => {
     .catch(next);
 };
 exports.addNewArticle = (req, res, next) => {
-  Article.create(req.body)
+  const article = {...req.body, belongs_to: req.params.topic_slug};
+  Article.create(article)
     .then(article => {
       if (!article) res.status(400).send({ msg: "Bad request" });
       res.setHeader("Content-Type", "application/json");
       res.status(201).send(JSON.stringify({ article }));
     })
     .catch(next);
-};
-const addCommentCount = article => {
-  return Comment.find({ belongs_to: article._id })
-    .countDocuments()
-    .then(count => {
-      return {...article, commentCount: count};
-    });
 };

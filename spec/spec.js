@@ -42,7 +42,7 @@ describe("/api", () => {
             expect(res.body.articles).to.be.an("array");
             expect(res.body.articles.length).to.equal(2);
             expect(
-              res.body.articles.find(a => a.created_by === "butter_bridge")
+              res.body.articles.find(a => a.belongs_to === "cats")
             ).to.not.equal(null);
           });
       });
@@ -73,20 +73,18 @@ describe("/api", () => {
           title: "Further Catspiracies catnipped in the bud!",
           body: "Cat burglar ring exposed!",
           created_by: userDocs[0]._id,
-          created_at: 1514987931240,
-          belongs_to: "cats"
+          created_at: 1514987931240
         };
         return request
           .post("/api/topics/articles")
           .send(newArticle)
           .expect(404);
       });
-      it("post/:topic_slug/articles returns a status 400 when passed an invalid schema format", () => {
+      it("post/:topic_slug/articles returns a status 400 'bad request' when passed an invalid schema format", () => {
         const newArticle = {
           title: 1264,
           created_by: userDocs[0]._id,
-          created_at: 1514987931240,
-          belongs_to: "cats"
+          created_at: 1514987931240
         };
         return request
           .post("/api/topics/cats/articles")
@@ -168,7 +166,7 @@ describe("/api", () => {
           .send(newComment)
           .expect(404);
       });
-      it("post /:article_id/comments returns a status 400 when passed an invalid schema format", () => {
+      it("post /:article_id/comments returns a status 400 'bad request' when passed an invalid schema format", () => {
         const newComment = {
           body:
             "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam!"
@@ -180,30 +178,30 @@ describe("/api", () => {
       });
     });
     describe("/patch/:article_id", () => {
-      it("/patch/:article_id returns a status 200 and an updated vote count", () => {
-        const expected = {
-          title: "Further Catspiracies catnipped in the bud!",
-          body: "Cat burglar ring exposed!",
-          created_by: userDocs[0]._id,
-          created_at: 1514987931240,
-          belongs_to: "cats"
-        };
+      it("/patch/:article_id returns a status 200 and an updated vote count for votes up", () => {
         return request
           .patch(`/api/articles/${articleDocs[0]._id}?vote=up`)
           .expect(200)
           .then(res => {
             expect(res.body.votes).to.equal(1);
-            expect(res.body).to.contain.keys(expected);
           });
       });
-      it("/patch/:article_id returns status 400 if passed an invalid query string", () => {
+      it("/patch/:article_id returns a status 200 and an updated vote count for votes down", () => {
+        return request
+          .patch(`/api/articles/${articleDocs[0]._id}?vote=down`)
+          .expect(200)
+          .then(res => {
+            expect(res.body.votes).to.equal(-1);
+          });
+      });
+      it("/patch/:article_id returns status 400 'bad request' if passed an invalid query string", () => {
         return request
           .patch(`/api/articles/${articleDocs[0]._id}?vote=banana`)
           .expect(400);
       });
     });
     describe("patch/:comment_id", () => {
-      it("patch/:comment_id returns a status 200 and an updated vote count", () => {
+      it("patch/:comment_id returns a status 200 and an updated vote count for votes up", () => {
         const expected = {
           body:
             "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
@@ -220,32 +218,54 @@ describe("/api", () => {
             expect(res.body).to.contain.keys(expected);
           });
       });
-      it("/patch/:comment_id returns status 400 if passed an invalid query string", () => {
-        return request
-          .patch(`/api/comments/${commentDocs[0]._id}?vote=gelato!`)
-          .expect(400);
+      describe("patch/:comment_id", () => {
+        it("patch/:comment_id returns a status 200 and an updated vote count for votes down", () => {
+          const expected = {
+            body:
+              "Nobis consequatur animi. Ullam nobis quaerat voluptates veniam.",
+            belongs_to: "Making sense of Redux",
+            created_by: "grumpy19",
+            votes: 7,
+            created_at: 1478813209256
+          };
+
+          return request
+            .patch(`/api/comments/${commentDocs[0]._id}?vote=down`)
+            .expect(200)
+            .then(res => {
+              expect(res.body.votes).to.equal(5);
+              expect(res.body).to.contain.keys(expected);
+            });
+        });
+
+        it("/patch/:comment_id returns status 400 and 'bad request' if passed an invalid query string", () => {
+          return request
+            .patch(`/api/comments/${commentDocs[0]._id}?vote=gelato!`)
+            .expect(400);
+        });
       });
-    });
-    describe("delete/:comment_id", () => {
-      it("delete/:comment_id returns a status 400 and message'comment deleted'", () => {
-        return request
-          .delete(`/api/comments/${commentDocs[0]._id}`)
-          .expect(200);
+      describe("delete/:comment_id", () => {
+        it("delete/:comment_id returns a status 200 and message'comment deleted'", () => {
+          return request
+            .delete(`/api/comments/${commentDocs[0]._id}`)
+            .expect(200);
+        });
       });
-    });
-    describe("get/:username", () => {
-      it("get/:username returns a status 200 and the user for the req params username", () => {
-        return request
-          .get(`/api/users/${userDocs[0].username}`)
-          .expect(200)
-          .then(res => {
-            console.log(res.body);
-            expect(res.body.user.name).to.equal(`${userDocs[0].name}`);
-          });
+      describe("get/:username", () => {
+        it("get/:username returns a status 200 and the user for the req params username", () => {
+          return request
+            .get(`/api/users/${userDocs[0].username}`)
+            .expect(200)
+            .then(res => {
+              console.log(res.body);
+              expect(res.body.user.name).to.equal(`${userDocs[0].name}`);
+            });
+        });
+
+        it("get/:username returns a status 404 if the username passed does not exist", () => {
+          return request.get(`/api/users/8888888888888`).expect(404);
+        });
       });
-    });
-    it("get/:username returns a status 404 if the username passed does not exist", () => {
-      return request.get(`/api/users/8888888888888`).expect(404);
     });
   });
 });
