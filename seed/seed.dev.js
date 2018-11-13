@@ -6,7 +6,7 @@ const {
   commentsData,
   topicsData,
   usersData
-} = require("./testData/index");
+} = require("./devData/index");
 
 mongoose
   .connect(
