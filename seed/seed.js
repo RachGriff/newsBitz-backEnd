@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const { formatArticles, formatComments } = require("../utils");
 const { Topic, User, Article, Comment } = require("../models");
 const seedDB = ({ articlesData, commentsData, topicsData, usersData }) => {
-
   return mongoose.connection
     .dropDatabase()
     .then(() => {
@@ -24,9 +23,7 @@ const seedDB = ({ articlesData, commentsData, topicsData, usersData }) => {
         topicDocs,
         userDocs,
         articleDocs,
-        Comment.insertMany(
-          formatComments(userDocs, articleDocs, commentsData)
-        )
+        Comment.insertMany(formatComments(userDocs, articleDocs, commentsData))
       ]);
     })
 

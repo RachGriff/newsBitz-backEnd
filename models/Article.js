@@ -30,10 +30,4 @@ const ArticleSchema = new Schema({
   }
 });
 
-//const Article =  mongoose.model("articles", ArticleSchema);
-
-//exports.getAll = () =>{
-//  return Article.find();
-//};
-
 module.exports = mongoose.model("articles", ArticleSchema);
